@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet"
+          type='text/css'>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Title</title>
+</head>
+<body class="bg-[#e3e3e3]">
+<header class="py-1.5 h-12 bg-[#4069db]">
+    <div class="max-w-[1000px] mx-auto px-4">
+        <div class="flex items-center gap-3 justify-end">
+            <a href="{% url 'home_page' %}" class="">
+                {% if user.profile.avatar %}
+                    <img alt="user" class="h-8 my-auto rounded-full aspect-square"
+                         src="{{ user.profile.avatar.url }}">
+                {% else %}
+                    <img alt="user" class="my-auto h-8" src="{% static 'images/circleuser.png' %}">
+                {% endif %}
+            </a>
+            <a href="" class="text-lg font-semibold text-white transition hover:text-slate-300">
+                {{ user.first_name }}
+            </a>
+            <a class="ml-3 text-lg text-white font-semibold transition hover:text-slate-300" href="{% url 'home_page' %}">
+                Home
+            </a>
+            <a href="{% url 'logout' %}" class="text-lg font-semibold text-white ml-3 transition hover:text-slate-300">
+                Log Out
+            </a>
+        </div>
+    </div>
+</header>
+<div>
+
+</div>
+<div class="w-2/3 mx-auto flex pt-2">
+    <div class="w-64">
+        <div class="pr-4">
+            <ul class="text-lg font-bold">
+                <a href="{% url 'index' %}">
+                    <li class="pl-2 flex hover:bg-white rounded-lg">
+                        <img class="transition hover:bg-white rounded-lg h-6 my-auto"
+                             src="{% static 'images/user1.png' %}">
+                        <span class="ml-1 py-1">My Profile</span>
+                    </li>
+                </a>
+                <a href="{% url 'index' %}">
+                    <li class="transition rounded-lg hover:bg-white pl-2 flex">
+                        <img class="h-6 my-auto" src="{% static 'images/news.png' %}">
+                        <span class="ml-1 py-1">News</span>
+                    </li>
+                </a>
+                <a class="" href="{% url 'friends' %}">
+                    <li class="transition rounded-lg pl-2 hover:bg-white flex">
+                        <img class="h-6 my-auto" src="{% static 'images/friends2.png' %}">
+                        <span class="ml-1 py-1">Friends</span>
+                    </li>
+                </a>
+            </ul>
+        </div>
+    </div>
+    {% block content %} {% endblock %}
+</div>
+
+<script>
+    function handleImageUpload() {
+
+        var image = document.getElementById("file-input").files[0];
+
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            document.getElementById("display-image").src = e.target.result;
+            document.getElementById("display-image").style.position = "static";
+        }
+
+        reader.readAsDataURL(image);
+
+    }
+</script>
+</body>
+</html>

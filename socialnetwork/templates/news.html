@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <div class="w-1/2">
+        <div>
+            <h1 class="font-semibold ml-3 text-lg flex text-blue-700 h-10 border-gray-300 border-b pt-1">Make Post</h1>
+            <div class="flex bg-white px-4 py-2 mb-4 shadow-xl rounded-lg">
+                <img class="h-12" src="{% static 'images/circleuser.png' %}">
+                <form method="post" enctype="multipart/form-data" action={% url 'home_page' %}>
+                    {% csrf_token %}
+                    {{ form.content }}
+                    <div class="flex">
+                        {{ form.image }}
+                        <label for="file-input"
+                               class="font-bold block text-black-400 bg-gray-200 w-24 rounded-2xl text-center h-8 p-1 hover:bg-gray-300 cursor-pointer transition">Photo</label>
+                        <button type="submit"
+                                class="h-8 w-20 rounded-xl bg-blue-400 ml-auto mr-12 text-center font-bold text-white text-lg hover:bg-blue-500 transition">
+                            Share
+                        </button>
+                    </div>
+                    <img src="" class="mt-4 h-24 absolute" id="display-image">
+                </form>
+            </div>
+            {% for post in posts %}
+                <div class="bg-white shadow-xl mb-4 pb-4 rounded-lg">
+                    <div class="p-3">
+                        <div class="flex">
+                            <img class="h-12" src={% static 'images/circleuser.png' %}>
+                            <div class="ml-2 block">
+                                <div class="font-semibold text-lg h-6">Nikita</div>
+                                <div>10.02.2012</div>
+                            </div>
+                        </div>
+                        <div class="">{{ post.content }}</div>
+                    </div>
+                    {% if post.image %}
+                        <img class="aspect-video object-contain " src={{ post.image.url }}>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
