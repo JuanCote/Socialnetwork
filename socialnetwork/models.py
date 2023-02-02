@@ -12,3 +12,8 @@ class Post(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     avatar = models.ImageField(blank=True, null=True, upload_to='images/')
+
+
+class Friends(models.Model):
+    user1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_content_type')
+    user2 = models.ForeignKey(User, on_delete=models.CASCADE)

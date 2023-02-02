@@ -1,3 +1,5 @@
+import json
+
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth import logout as django_logout
@@ -5,9 +7,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_protect
 
 from .forms import Login, Register, PostForm, Post
-from .models import Post
+from .models import Post, Friends
 
 
 def index(request):
@@ -21,13 +25,17 @@ def index(request):
     if request.method == 'POST' and 'Login' in request.POST:
         form_login = Login(request.POST)
         if form_login.is_valid():
-            username = form_login.cleaned_data['email'].split('@',1)[0]
-            user = authenticate(username=username, password=form_login.cleaned_data['password'])
-            if user is not None:
-                login(request, user)
-                return redirect('home_page')
+            user_from_db = User.objects.filter(email=form_login.cleaned_data['email'])
+            if user_from_db:
+                username = user_from_db[0].username
+                user = authenticate(username=username, password=form_login.cleaned_data['password'])
+                if user is not None:
+                    login(request, user)
+                    return redirect('home_page')
+                else:
+                    form_login.add_error(None, 'Invalid password')
             else:
-                form_login.add_error(None, 'Invalid email or password')
+                form_login.add_error(None, 'Invalid email')
     elif request.method == 'POST' and 'Register' in request.POST:
         form_register = Register(request.POST)
         if form_register.is_valid():
@@ -67,6 +75,19 @@ def logout(request):
 
 @login_required(login_url='index')
 def friends(request):
-    users = User.objects.select_related('profile')
-    data = {'users': users}
+    users = User.objects.select_related('profile').exclude(username=request.user)
+    current_user = request.user
+    data = {'users': users, 'current_user': current_user}
     return render(request, 'friends.html', context=data)
+
+
+def subscribe(request):
+    data = json.loads(request.body)
+    users = User.objects.filter(username__in=(data['user1'], data['user2']))
+    subscribe = Friends.objects.filter(user1=users[0], user2=users[1])
+    if subscribe.exists():
+        subscribe.delete()
+    else:
+        subscribe = Friends.objects.create(user1=users[0], user2=users[1])
+        subscribe.save()
+    return JsonResponse({'Nikita': 'viktor'})

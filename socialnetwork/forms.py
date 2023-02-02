@@ -46,7 +46,8 @@ class Register(forms.ModelForm):
         return make_password(self.cleaned_data['password'])
 
     def clean(self):
-        self.instance.username = self.cleaned_data['email'].split('@', 1)[0]
+        last_id = User.objects.latest('id').id
+        self.instance.username = last_id + 1
 
 
 class PostForm(forms.ModelForm):
