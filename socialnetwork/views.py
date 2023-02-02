@@ -76,8 +76,9 @@ def logout(request):
 @login_required(login_url='index')
 def friends(request):
     users = User.objects.select_related('profile').exclude(username=request.user)
-    current_user = request.user
-    data = {'users': users, 'current_user': current_user}
+    subscriptions_id = Friends.objects.filter(user1=request.user).values_list('user2', flat=True)
+    subscriptions = User.objects.filter(username__in=subscriptions_id)
+    data = {'users': users, 'current_user': request.user, 'subscriptions': subscriptions}
     return render(request, 'friends.html', context=data)
 
 
