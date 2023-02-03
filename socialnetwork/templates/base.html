@@ -23,9 +23,6 @@
             <a href="" class="text-lg font-semibold text-white transition hover:text-slate-300">
                 {{ user.first_name }}
             </a>
-            <a class="ml-3 text-lg text-white font-semibold transition hover:text-slate-300" href="{% url 'home_page' %}">
-                Home
-            </a>
             <a href="{% url 'logout' %}" class="text-lg font-semibold text-white ml-3 transition hover:text-slate-300">
                 Log Out
             </a>
@@ -52,7 +49,7 @@
                         <span class="ml-1 py-1">News</span>
                     </li>
                 </a>
-                <a class="" href="{% url 'friends' %}">
+                <a class="" href="{% url 'friends_all' %}">
                     <li class="transition rounded-lg pl-2 hover:bg-white flex">
                         <img class="h-6 my-auto" src="{% static 'images/friends2.png' %}">
                         <span class="ml-1 py-1">Friends</span>

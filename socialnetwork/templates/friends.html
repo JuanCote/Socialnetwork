@@ -2,24 +2,28 @@
 {% load static %}
 {% block content %}
 {% csrf_token %}
-    <div class="w-full">
-        <div>
-            <h1 class="font-semibold ml-3 text-lg flex text-blue-700 h-10 border-gray-300 pt-1">Friends</h1>
-            <div class="bg-white px-4 py-2 mb-4 shadow-xl rounded-lg grid grid-cols-2 gap-4">
-                {% for user in users %}
-                    <div class="flex" id="user">
-                        <img class="h-24 aspect-square rounded-l-lg" src="{{ 'media/images/kelly-sikkema-7cHA62PmwhQ-unsplash.jpg' }}" >
-                        <div class="border-r border-t border-b flex items-center pr-2 rounded-r-lg w-full">
-                            <p class="ml-4 text-lg">{{ user.first_name }} {{ user.last_name }}</p>
-                            {% if user in subscriptions %}
-                                <button id="{{ user.id }}" name="clicked" onclick="subscribe(this.id, {{ current_user }}, {{ user.username }})" class="px-4 py-2 ml-auto bg-blue-100 text-white font-semibold transition rounded-xl hover:bg-blue-400">Subscribe</button>
-                            {% else %}
-                                <button id="{{ user.id }}" name="notClicked" onclick="subscribe(this.id, {{ current_user }}, {{ user.username }})" class="px-4 py-2 ml-auto bg-blue-500 text-white font-semibold transition rounded-xl hover:bg-blue-400">Subscribe</button>
-                            {% endif %}
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
+    <div class="w-full bg-gray-100 rounded-lg">
+        <div class="">
+            <h1 class="font-bold ml-3 text-xl flex text-black-300 h-10 border-gray-100 pt-1">Friends</h1>
+            <ul class="flex ml-3 font-semibold text-lg mb-1">
+                {% if page == 0 %}
+                    <a href="{% url 'friends_all' %}" class="mr-3 hover:cursor-pointer"><li class="[word-spacing:-0.1rem] text-blue-600">All People</li></a>
+                {% else %}
+                    <a href="{% url 'friends_all' %}" class="mr-3 hover:cursor-pointer"><li class="[word-spacing:-0.1rem] ">All People</li></a>
+                {% endif %}
+                {% if page == 1 %}
+                    <a href="{% url 'friends_subscribers' %}" class="mr-3 hover:cursor-pointer"><li class="text-blue-600">Subscribers</li></a>
+                {% else %}
+                    <a href="{% url 'friends_subscribers' %}" class="mr-3 hover:cursor-pointer"><li class="">Subscribers</li></a>
+                {% endif %}
+                {% if page == 2 %}
+                    <a href="{% url 'friends_subscriptions' %}" class="mr-3 hover:cursor-pointer"><li class="text-blue-600">Subscriptions</li></a>
+                {% else %}
+                    <a href="{% url 'friends_subscriptions' %}" class="mr-3 hover:cursor-pointer"><li class="">Subscriptions</li></a>
+                {% endif %}
+            </ul>
+                {% block friends %} {% endblock %}
+
         </div>
     </div>
     <script type="text/javascript" src="{% static 'main.js' %}"></script>

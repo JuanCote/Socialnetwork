@@ -74,21 +74,44 @@ def logout(request):
 
 
 @login_required(login_url='index')
-def friends(request):
+def friends_all(request):
     users = User.objects.select_related('profile').exclude(username=request.user)
     subscriptions_id = Friends.objects.filter(user1=request.user).values_list('user2', flat=True)
     subscriptions = User.objects.filter(username__in=subscriptions_id)
-    data = {'users': users, 'current_user': request.user, 'subscriptions': subscriptions}
-    return render(request, 'friends.html', context=data)
+    data = {'users': users, 'current_user': request.user, 'subscriptions': subscriptions, 'page': 0}
+    return render(request, 'friends_all.html', context=data)
+
+
+@login_required(login_url='index')
+def friends_subscriptions(request):
+    subscriptions_id = Friends.objects.filter(user1=request.user).values_list('user2', flat=True)
+    subscriptions = User.objects.filter(username__in=subscriptions_id)
+    data = {'subscriptions': subscriptions, 'current_user': request.user, 'page': 2}
+    return render(request, 'friends_subscriptions.html', context=data)
+
+
+@login_required(login_url='index')
+def friends_subscribers(request):
+    subscribers_id = Friends.objects.filter(user2=request.user).values_list('user1', flat=True)
+    subscriptions_id = Friends.objects.filter(user1=request.user).values_list('user2', flat=True)
+    subscribers = User.objects.filter(username__in=subscribers_id)
+    subscriptions = User.objects.filter(username__in=subscriptions_id)
+    data = {'subscribers': subscribers, 'subscriptions': subscriptions, 'current_user': request.user, 'page': 1}
+    return render(request, 'friends_subscribers.html', context=data)
 
 
 def subscribe(request):
     data = json.loads(request.body)
     users = User.objects.filter(username__in=(data['user1'], data['user2']))
-    subscribe = Friends.objects.filter(user1=users[0], user2=users[1])
+    if int(users[0].username) == data['user1']:
+        print('shot')
+        user1, user2 = users[0], users[1]
+    else:
+        user1, user2 = users[1], users[0]
+    subscribe = Friends.objects.filter(user1=user1, user2=user2)
     if subscribe.exists():
         subscribe.delete()
     else:
-        subscribe = Friends.objects.create(user1=users[0], user2=users[1])
+        subscribe = Friends.objects.create(user1=user1, user2=user2)
         subscribe.save()
     return JsonResponse({'Nikita': 'viktor'})
