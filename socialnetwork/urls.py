@@ -2,7 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
 
-from .views import index, home_page, logout, friends_all, subscribe, friends_subscriptions, friends_subscribers
+from .views import index, home_page, logout, friends_all, subscribe, friends_subscriptions, friends_subscribers, profile
 
 urlpatterns = [
     path('', index, name='index'),
@@ -12,6 +12,7 @@ urlpatterns = [
     path('friends_subscriptions', friends_subscriptions, name='friends_subscriptions'),
     path('friends_subscribers', friends_subscribers, name='friends_subscribers'),
     path('subscribe', subscribe, name='subscribe'),
+    path('profile', profile, name='profile'),
 ]
 
 if settings.DEBUG:

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <div class="relative flex flex-col">
+        <div class="w-96">
+            <div class="h-20 bg-gray-100 border-b-2 border-gray-200"></div>
+            <div class="p-4 h-96 bg-white"></div>
+        </div>
+        <div class="flex absolute m-6">
+            <img class="h-64 aspect-[3/4]" src="{% static 'images/1.jpg' %}">
+            <div class="ml-4">
+                <h1>Ammy Waller</h1>
+                <p class="mb-3">is excited</p>
+                <ul>
+                    <li>Networks</li>
+                    <li>Sex</li>
+                    <li>Interested in</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

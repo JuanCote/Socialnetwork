@@ -8,7 +8,9 @@
                 <img class="h-12" src="{% static 'images/circleuser.png' %}">
                 <form method="post" enctype="multipart/form-data" action={% url 'home_page' %}>
                     {% csrf_token %}
-                    {{ form.content }}
+                    <div>
+                        {{ form.content }}
+                    </div>
                     <div class="flex">
                         {{ form.image }}
                         <label for="file-input"
@@ -27,8 +29,8 @@
                         <div class="flex">
                             <img class="h-12" src={% static 'images/circleuser.png' %}>
                             <div class="ml-2 block">
-                                <div class="font-semibold text-lg h-6">Nikita</div>
-                                <div>10.02.2012</div>
+                                <div class="font-semibold text-lg h-6">{{ post.user.first_name }} {{ post.user.last_name }}</div>
+                                <div>{{ post.created_at.date }}</div>
                             </div>
                         </div>
                         <div class="">{{ post.content }}</div>

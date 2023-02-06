@@ -100,6 +100,12 @@ def friends_subscribers(request):
     return render(request, 'friends_subscribers.html', context=data)
 
 
+@login_required(login_url='index')
+def profile(request):
+    data = {'asdas': 'asdasddas'}
+    return render(request, 'profile.html', context=data)
+
+
 def subscribe(request):
     data = json.loads(request.body)
     users = User.objects.filter(username__in=(data['user1'], data['user2']))

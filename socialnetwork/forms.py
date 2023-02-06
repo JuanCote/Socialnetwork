@@ -54,7 +54,7 @@ class PostForm(forms.ModelForm):
     content = forms.CharField(max_length=188, widget=forms.Textarea(attrs={"type": "text",
                                                                            "cols": "80",
                                                                             "class": "overflow-y-hidden resize-none w-full h-16 p-4 border-b rounded outline-none font-sans font-medium text-base",
-                                                                            "placeholder": "What's on your mind, Nikita"}))
+                                                                           "placeholder": "What`s on your mind"}))
     image = forms.ImageField(required=False, validators=[validate_image_file_extension], widget=forms.FileInput(
         attrs={
             'class': 'w-0.5 h-0.5 absolute opacity-0',
