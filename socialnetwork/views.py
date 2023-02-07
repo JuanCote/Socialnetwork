@@ -5,13 +5,14 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth import logout as django_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_protect
 
 from .forms import Login, Register, PostForm, Post
-from .models import Post, Friends
+from .models import Post, Friends, Profile
 
 
 def index(request):
@@ -102,7 +103,15 @@ def friends_subscribers(request):
 
 @login_required(login_url='index')
 def profile(request):
-    data = {'asdas': 'asdasddas'}
+    user = Profile.objects.get(user_id=request.user)
+    subscribers_subscriptions = Friends.objects.filter(Q(user1=user.id) | Q(user2=user.id))
+    subscribers, subscriptions = 0, 0
+    for record in subscribers_subscriptions:
+        if record.user1.id == user.id:
+            subscriptions += 1
+        else:
+            subscribers += 1
+    data = {'profile': user, 'subscribers': subscribers, 'subscriptions': subscriptions}
     return render(request, 'profile.html', context=data)
 
 
