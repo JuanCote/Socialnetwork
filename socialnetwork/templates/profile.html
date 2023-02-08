@@ -4,8 +4,12 @@
 <div class="flex flex-col relative">
     <div class="rounded-t-lg pt-6 bg-[#f9f9f9] h-24 w-96 w-[50rem] border-b-2 border-[#eeeeee]">
         <div class="ml-[19rem]">
-            <h1 class="text-lg font-semibold">{{ profile.user.first_name }} {{ profile.user.last_name }}</h1>
-            <p class="mb-3">{{ profile.about_me }}</p>
+            <h1 class="text-lg font-semibold">{{ profile.user.user.first_name }} {{ profile.user.user.last_name }}</h1>
+            {% if profile.user.about_me %}
+                <p class="mb-3">{{ profile.user.about_me }}</p>
+            {% else %}
+                <p class="mb-3"> - </p>
+            {% endif %}
         </div>
     </div>
     <div class="pt-4 rounded-b-lg bg-white h-96 w-96 w-[50rem]">
@@ -20,12 +24,9 @@
                     <li>Hometown:</li>
                 </ul>
                 <ul class="ml-6">
-                    <li>{{ profile.sex }}</li>
-                    <li>{{ profile.interested_in }}</li>
-                    <li>{{ profile.relationship_status }}</li>
-                    <li>{{ profile.looking_for }}</li>
-                    <li>{{ profile.birthday }}</li>
-                    <li>{{ profile.hometown }}</li>
+                    {% for elem in profile.details %}
+                        <li>{{ elem }}</li>
+                    {% endfor %}
                 </ul>
             </div>
             <div class="mt-3 font-semibold">

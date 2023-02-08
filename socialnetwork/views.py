@@ -6,6 +6,8 @@ from django.contrib.auth import logout as django_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Q
+from django.db.models.signals import pre_save, post_save
+from django.dispatch import receiver
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
@@ -49,6 +51,11 @@ def index(request):
     data = {'form_login': form_login, 'form_register': form_register, 'hidden': hidden}
     return render(request, 'index.html', context=data)
 
+
+@receiver(post_save, sender=User)
+def create_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
 
 @login_required(login_url='index')
 def home_page(request):
@@ -104,14 +111,21 @@ def friends_subscribers(request):
 @login_required(login_url='index')
 def profile(request):
     user = Profile.objects.get(user_id=request.user)
-    subscribers_subscriptions = Friends.objects.filter(Q(user1=user.id) | Q(user2=user.id))
+    subscribers_subscriptions = Friends.objects.filter(Q(user1=request.user.id) | Q(user2=request.user.id))
     subscribers, subscriptions = 0, 0
     for record in subscribers_subscriptions:
         if record.user1.id == user.id:
             subscriptions += 1
         else:
             subscribers += 1
-    data = {'profile': user, 'subscribers': subscribers, 'subscriptions': subscriptions}
+    field_names = [str(i).split('.')[-1] for i in user._meta.get_fields()[3:-1]]
+    profile = {'user': user, 'details': []}
+    for field in field_names:
+        if user.__dict__[field]:
+            profile['details'].append(user.__dict__[field])
+        else:
+            profile['details'].append('-')
+    data = {'field_names': field_names, 'profile': profile, 'subscribers': subscribers, 'subscriptions': subscriptions}
     return render(request, 'profile.html', context=data)
 
 
