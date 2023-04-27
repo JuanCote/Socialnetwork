@@ -46,7 +46,10 @@ class Register(forms.ModelForm):
         return make_password(self.cleaned_data['password'])
 
     def clean(self):
-        last_id = User.objects.latest('id').id
+        try:
+            last_id = User.objects.latest('id').id
+        except:
+            last_id = 0
         self.instance.username = last_id + 1
 
 

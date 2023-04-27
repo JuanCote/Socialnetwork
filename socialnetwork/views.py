@@ -57,6 +57,7 @@ def create_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
 
+
 @login_required(login_url='index')
 def home_page(request):
     user = request.user
@@ -114,7 +115,7 @@ def profile(request):
     subscribers_subscriptions = Friends.objects.filter(Q(user1=request.user.id) | Q(user2=request.user.id))
     subscribers, subscriptions = 0, 0
     for record in subscribers_subscriptions:
-        if record.user1.id == user.id:
+        if record.user1.id == user.user_id:
             subscriptions += 1
         else:
             subscribers += 1
