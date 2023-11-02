@@ -206,3 +206,32 @@ class ProfileForm(forms.ModelForm):
             "hometown",
             "about_me",
         ]
+
+
+class EditAvaForm(forms.ModelForm):
+    image = forms.ImageField(
+        required=True,
+        widget=forms.FileInput(
+            attrs={
+                "id": "imageInput",
+                "class": 'hidden'
+            }
+        ),
+    )
+
+    class Meta:
+        model = Profile
+        fields = ['avatar']
+
+    def save(self):
+        profile = self.instance
+        profile.avatar = self.cleaned_data['image']
+        profile.save()
+
+
+    def clean_image(self):
+        image = self.cleaned_data.get('image')
+        if image:
+            if not image.content_type.startswith('image'):
+                raise forms.ValidationError('Empty image')
+        return image

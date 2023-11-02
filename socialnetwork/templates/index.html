@@ -31,7 +31,7 @@
             <button name="Login" value="Log in" type="submit" class="mb-3 bg-blue-500 h-12 rounded-md text-white text-xl font-semibold transition hover:bg-blue-600">Log In</button>
         </form>
         <button id="btnReg"
-                class="mb-2 bg-green-500 w-56 m-auto h-12 rounded-md text-white text-xl font-semibold transition hover:bg-green-600">
+                class="mb-2 bg-green-500 w-full m-auto h-12 rounded-md text-white text-xl font-semibold transition hover:bg-green-600">
             Create New Account
         </button>
         </div>
@@ -67,27 +67,6 @@
     </div>
 </div>
 
-<script>
-    // Get the modal
-    const modal = document.getElementById("regModal");
-
-    // Get the button that opens the modal
-    const btn = document.getElementById("btnReg");
-
-    // Get the <span> element that closes the modal
-    const span = document.getElementById("cross");
-
-    // When the user clicks the button, open the modal
-    btn.onclick = function () {
-        modal.style.display = "block";
-
-    }
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function () {
-        modal.style.display = "none";
-    }
-</script>
 <style>
     #regModal {
         opacity: 0;
@@ -98,5 +77,6 @@
         100% {opacity: 1;}
     }
 </style>
+<script type="text/javascript" src="{% static 'js/index.js' %}"></script>
 </body>
 </html>

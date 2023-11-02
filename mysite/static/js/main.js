@@ -1,3 +1,18 @@
+function handleImageUpload() {
+
+        const image = document.getElementById("file-input").files[0];
+
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            document.getElementById("display-image").src = e.target.result;
+            document.getElementById("display-image").style.position = "static";
+        }
+
+        reader.readAsDataURL(image);
+
+    }
+
 async function subscribe(id, user1, user2) {
     button = document.getElementById(id)
     if (button.name == 'notClicked') {

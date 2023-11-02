@@ -10,7 +10,7 @@
 </head>
 <body class="bg-[#e3e3e3]">
 <header class="py-1.5 h-12 bg-[#4069db]">
-    <div class="max-w-[1000px] mx-auto px-4">
+    <div class="w-[1200px] mx-auto">
         <div class="flex items-center gap-3 justify-end">
             <a href="{% url 'home_page' %}" class="">
                 {% if user.profile.avatar %}
@@ -29,11 +29,8 @@
         </div>
     </div>
 </header>
-<div>
-
-</div>
-<div class="w-2/3 mx-auto flex pt-2">
-    <div class="w-64">
+<div class="w-[1200px] mx-auto mt-[2rem] justify-beetwen flex pt-2">
+    <div class="w-1/6">
         <div class="pr-4">
             <ul class="text-lg font-bold">
                 <a href="{% url 'profile' %}">
@@ -58,24 +55,8 @@
             </ul>
         </div>
     </div>
-    {% block content %} {% endblock %}
+    <div class="w-5/6">{% block content %} {% endblock %}</div>
 </div>
-
-<script>
-    function handleImageUpload() {
-
-        var image = document.getElementById("file-input").files[0];
-
-        var reader = new FileReader();
-
-        reader.onload = function (e) {
-            document.getElementById("display-image").src = e.target.result;
-            document.getElementById("display-image").style.position = "static";
-        }
-
-        reader.readAsDataURL(image);
-
-    }
-</script>
+<script type="text/javascript" src="{% static 'js/main.js' %}"></script>
 </body>
 </html>

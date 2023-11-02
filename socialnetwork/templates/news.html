@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-    <div class="w-1/2">
+    <div class="w-2/3">
         <div>
             <h1 class="font-semibold ml-3 text-lg flex text-blue-700 h-10 border-gray-300 border-b pt-1">Make Post</h1>
-            <div class="flex bg-white px-4 py-2 mb-4 shadow-xl rounded-lg">
-                <img class="h-12" src="{% static 'images/circleuser.png' %}">
+            <div class="flex bg-white px-4 py-4 mb-4 shadow-xl rounded-lg">
+                <img class="h-12 aspect-square object-cover rounded-full" src={{ user.profile.avatar.url }}>
                 <form method="post" enctype="multipart/form-data" action={% url 'home_page' %}>
                     {% csrf_token %}
                     <div>
@@ -24,10 +24,10 @@
                 </form>
             </div>
             {% for post in posts %}
-                <div class="bg-white shadow-xl mb-4 pb-4 rounded-lg">
+                <div class="bg-white shadow-xl mb-4 py-4 px-2 rounded-lg">
                     <div class="p-3">
                         <div class="flex">
-                            <img class="h-12" src={% static 'images/circleuser.png' %}>
+                            <img class="aspect-square h-12 rounded-full object-cover" src={{ post.user.profile.avatar.url }}>
                             <div class="ml-2 block">
                                 <div class="font-semibold text-lg h-6">{{ post.user.first_name }} {{ post.user.last_name }}</div>
                                 <div>{{ post.created_at.date }}</div>
@@ -36,7 +36,7 @@
                         <div class="break-all">{{ post.content }}</div>
                     </div>
                     {% if post.image %}
-                        <img class="mx-auto aspect-video object-contain " src={{ post.image.url }}>
+                        <img class="p-4 mx-auto aspect-video w-full h-full object-cover object-contain " src={{ post.image.url }}>
                     {% endif %}
                 </div>
             {% endfor %}

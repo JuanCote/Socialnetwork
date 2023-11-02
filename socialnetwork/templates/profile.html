@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 <div class="flex flex-col relative">
-    <div class="rounded-t-lg pt-6 bg-[#f9f9f9] h-24 w-96 w-[50rem] border-b-2 border-[#eeeeee]">
+    <div class="rounded-t-lg pt-6 bg-[#f9f9f9] h-24 border-b-2 border-[#eeeeee]">
         <div class="ml-[19rem]">
             <h1 class="text-lg font-semibold">{{ profile.user.user.first_name }} {{ profile.user.user.last_name }}</h1>
             {% if profile.user.about_me %}
@@ -12,8 +12,13 @@
             {% endif %}
         </div>
     </div>
-    <div class="pt-4 rounded-b-lg bg-white h-96 w-96 w-[50rem]">
-        <div class="ml-[19rem]">
+    <div class="pt-4 flex rounded-b-lg bg-white h-80">
+        <div class="mt-[-5.5rem] ml-[1.5rem]">
+            <div class="relative rounded-full overflow-hidden h-[15rem] flex mx-auto" id="avaDiv">
+                <img src={{ profile.user.avatar.url }} class="cursor-pointer hover:opacity-50 transition rounded-full aspect-square object-cover">
+            </div>
+        </div>
+        <div class="ml-6">
             <div class="flex">
                 <ul class="text-gray-400">
                     <li>Sex:</li>
@@ -38,24 +43,20 @@
             </div>
         </div>
     </div>
-    <img class="absolute h-72 ml-6 mt-6 aspect-[3/3.3]" src="{% static 'images/user2.png' %}">
 </div>
-{% if not hidden %}
-    <div class="left-0 top-0 w-full h-full fixed z-1 pt-48 bg-white/60" id="profModal">
-{% else %}
-    <div class="left-0 top-0 w-full h-full hidden fixed z-1 pt-48 bg-white/60" id="profModal">
-{% endif %}
+<div class="left-0 top-0 w-full h-full hidden fixed z-1 pt-48 bg-white/60" id="profModal">
     <div class="shadow-xl bg-neutral-50 m-auto border-1 border-zinc-500 w-1/4">
         <div class="border-b border-gray-300 flex p-3">
             <div>
                 <h1 class="font-bold text-3xl">Edit profile</h1>
             </div>
-            <img id="cross" alt="cross" class="h-8 ml-auto" src="{% static 'images/cross.png' %}">
+            <img id="cross" alt="cross" class="h-8 ml-auto cursor-pointer" src="{% static 'images/cross.png' %}">
         </div>
         <div class="p-4 flex flex-col">
             <form class="flex flex-col space-y-2" method="POST" action="{% url 'profile' %}">
                 {% csrf_token %}
                 <!--                <div class="mb-3 text-lg bg-red-300 text-red-800 pl-3">{{ form.non_field_errors }}</div>-->
+                <input type="hidden" name="action" value="updateProfile">
                 {{ form.about_me }}
                 {{ form.interested_in }}
                 <div class="flex space-x-2">
@@ -68,33 +69,33 @@
                 </div>
                 {{ form.hometown }}
 
-                <button type="submit" class="w-2/5 text-white text-xl font-semibold h-10 bg-green-500 transition hover:bg-green-600 mt-6 mx-auto rounded-lg">Edit</button>
+                <button type="submit" name="Profile" class="w-2/5 text-white text-xl font-semibold h-10 bg-green-500 transition hover:bg-green-600 mt-6 mx-auto rounded-lg">Edit</button>
             </form>
         </div>
     </div>
 </div>
+<div class="left-0 top-0 hidden w-full h-full fixed z-1 pt-48 bg-white/60" id="avaModal">
+    <div class="shadow-xl bg-neutral-50 m-auto border-1 border-zinc-500 w-1/4">
+        <div class="border-b border-gray-300 flex p-3">
+            <div>
+                <h1 class="font-bold text-3xl">Edit avatar</h1>
+            </div>
+            <img id="cross-ava" alt="cross" class="h-8 ml-auto cursor-pointer" src="{% static 'images/cross.png' %}">
+        </div>
+        <div class="p-4">
+            <form enctype="multipart/form-data" class="flex flex-col" method="POST" action="{% url 'profile' %}">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="updateAva">
+                <label class="relative rounded-full overflow-hidden h-[15rem] flex mx-auto" for="imageInput">
+                    <img src={{ profile.user.avatar.url }} class="cursor-pointer hover:opacity-50 transition rounded-full aspect-square object-cover" id="display-image">
+                </label>
+                {{ form_ava.image }}
+                <button type="submit" name="Avatar" class="w-3/5 text-white text-xl font-semibold h-10 bg-green-500 transition hover:bg-green-600 mt-6 mx-auto rounded-lg">Edit</button>
+            </form>
+        </div>
     </div>
-<script>
-    // Get the modal
-    const modal = document.getElementById("profModal");
-
-    // Get the button that opens the modal
-    const btn = document.getElementById("btnProf");
-
-    // Get the <span> element that closes the modal
-    const span = document.getElementById("cross");
-
-    // When the user clicks the button, open the modal
-    btn.onclick = function () {
-        modal.style.display = "block";
-
-    }
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function () {
-        modal.style.display = "none";
-    }
-</script>
+</div>
+<script type="text/javascript" src="{% static 'js/profile.js' %}"></script>
 <style>
     #profModal {
         opacity: 0;

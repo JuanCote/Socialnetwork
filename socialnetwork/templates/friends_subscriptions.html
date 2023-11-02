@@ -1,5 +1,4 @@
 {% extends "friends.html" %}
-{% load static %}
 {% block friends %}
 {% csrf_token %}
 
@@ -24,5 +23,4 @@
 {% endfor %}
 </div>
 {% endif %}
-<script type="text/javascript" src="{% static 'js/main.js' %}"></script>
 {% endblock %}

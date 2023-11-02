@@ -13,7 +13,7 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_protect
 
-from .forms import Login, Register, PostForm, Post, ProfileForm
+from .forms import Login, Register, PostForm, Post, ProfileForm, EditAvaForm
 from .models import Post, Friends, Profile
 
 
@@ -83,6 +83,7 @@ def home_page(request):
             print("not valid")
     else:
         posts = Post.objects.order_by("-created_at")
+        print(posts[0].user.profile.avatar.url)
         data = {"form": form, "posts": posts, "user": user}
         return render(request, "news.html", context=data)
 
@@ -133,22 +134,30 @@ def friends_subscribers(request):
 @login_required(login_url="index")
 def profile(request):
     user = Profile.objects.get(user_id=request.user)
-    form = ProfileForm()
-    form.fields['sex'].initial = user.sex
-    form.fields['interested_in'].initial = user.interested_in
-    form.fields['relationship_status'].initial = user.relationship_status
-    form.fields['looking_for'].initial = user.looking_for
-    form.fields['birthday'].initial = user.birthday
-    form.fields['hometown'].initial = user.hometown
-    form.fields['about_me'].initial = user.about_me
-    if request.method == "POST":
+    if request.method == "POST" and request.POST.get('action') == 'updateProfile':
         form = ProfileForm(request.POST, instance=user)
         if form.is_valid():
             form.save()
             return redirect("profile")
         else:
             print("not valid")
+    elif request.method == "POST" and request.POST.get('action') == 'updateAva':
+        form = EditAvaForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect("profile")
+        else:
+            print("not valid")      
     else:
+        form = ProfileForm()
+        form.fields["sex"].initial = user.sex
+        form.fields["interested_in"].initial = user.interested_in
+        form.fields["relationship_status"].initial = user.relationship_status
+        form.fields["looking_for"].initial = user.looking_for
+        form.fields["birthday"].initial = user.birthday
+        form.fields["hometown"].initial = user.hometown
+        form.fields["about_me"].initial = user.about_me
+        form_ava = EditAvaForm()
         subscribers_subscriptions = Friends.objects.filter(
             Q(user1=request.user.id) | Q(user2=request.user.id)
         )
@@ -171,7 +180,7 @@ def profile(request):
             "subscribers": subscribers,
             "subscriptions": subscriptions,
             "form": form,
-            "hidden": True,
+            "form_ava": form_ava,
         }
         return render(request, "profile.html", context=data)
 

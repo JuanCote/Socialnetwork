@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 {% csrf_token %}
-    <div class="w-full bg-gray-100 rounded-lg">
+    <div class="bg-gray-100 rounded-lg">
         <div class="">
             <h1 class="font-bold ml-3 text-xl flex text-black-300 h-10 border-gray-100 pt-1">Friends</h1>
             <ul class="flex ml-3 font-semibold text-lg mb-1">
@@ -23,8 +23,6 @@
                 {% endif %}
             </ul>
                 {% block friends %} {% endblock %}
-
         </div>
     </div>
-    <script type="text/javascript" src="{% static 'main.js' %}"></script>
 {% endblock %}
