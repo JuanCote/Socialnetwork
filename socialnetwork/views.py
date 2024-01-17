@@ -34,7 +34,7 @@ def index(request):
                 user = authenticate(
                     username=username, password=form_login.cleaned_data["password"]
                 )
-                if user is not None:
+                if user:
                     login(request, user)
                     return redirect("home_page")
                 else:
@@ -79,11 +79,8 @@ def home_page(request):
             )
             post.save()
             return redirect("home_page")
-        else:
-            print("not valid")
     else:
         posts = Post.objects.order_by("-created_at")
-        print(posts[0].user.profile.avatar.url)
         data = {"form": form, "posts": posts, "user": user}
         return render(request, "news.html", context=data)
 
@@ -139,15 +136,11 @@ def profile(request):
         if form.is_valid():
             form.save()
             return redirect("profile")
-        else:
-            print("not valid")
     elif request.method == "POST" and request.POST.get('action') == 'updateAva':
         form = EditAvaForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             form.save()
             return redirect("profile")
-        else:
-            print("not valid")      
     else:
         form = ProfileForm()
         form.fields["sex"].initial = user.sex
@@ -189,7 +182,6 @@ def subscribe(request):
     data = json.loads(request.body)
     users = User.objects.filter(username__in=(data["user1"], data["user2"]))
     if int(users[0].username) == data["user1"]:
-        print("shot")
         user1, user2 = users[0], users[1]
     else:
         user1, user2 = users[1], users[0]
