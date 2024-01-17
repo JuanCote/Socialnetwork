@@ -18,7 +18,7 @@
             <p>test@gmail.com : 123456</p>
         </div>
         <div class="w-80 shadow-xl bg-white py-3.5 px-3.5 rounded-md flex flex-col">
-        <form class="flex flex-col" action="{% url 'index' %}" method="post">
+        <form class="flex flex-col" action="{% url 'sign_in' %}" method="post">
             {% csrf_token %}
             {% if messages %}
                 {% for message in messages %}
@@ -38,7 +38,7 @@
     </div>
 
 </div>
-{% if not hidden %}
+{% if visible_popup %}
     <div class="left-0 top-0 w-full h-full fixed z-1 pt-48 bg-white/60" id="regModal">
 {% else %}
     <div class="left-0 top-0 w-full h-full hidden fixed z-1 pt-48 bg-white/60" id="regModal">
@@ -52,7 +52,7 @@
             <img id="cross" alt="cross" class="h-8 ml-auto" src="{% static 'images/cross.png' %}">
         </div>
         <div class="p-4 flex flex-col">
-            <form class="flex flex-col" method="post" action="{% url 'index' %}">
+            <form class="flex flex-col" method="post" action="{% url 'sign_up' %}">
                 <div class="mb-3 text-lg bg-red-300 text-red-800 pl-3">{{ form_register.non_field_errors }}</div>
                 <div class="flex">
                     {% csrf_token %}

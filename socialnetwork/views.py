@@ -21,41 +21,44 @@ def index(request):
     if request.user.is_authenticated:
         return redirect("home_page")
 
-    hidden = True
-    form_login = Login()
-    form_register = Register()
+    data = {
+        "form_login": Login(), 
+        "form_register": Register()
+        }
 
-    if request.method == "POST" and "Login" in request.POST:
-        form_login = Login(request.POST)
-        if form_login.is_valid():
-            user_from_db = User.objects.filter(email=form_login.cleaned_data["email"])
-            if user_from_db:
-                username = user_from_db[0].username
-                user = authenticate(
-                    username=username, password=form_login.cleaned_data["password"]
-                )
-                if user:
-                    login(request, user)
-                    return redirect("home_page")
-                else:
-                    form_login.add_error(None, "Invalid password")
+    return render(request, "index.html", context=data)
+
+
+def sign_in(request):
+    form_login = Login(request.POST)
+    if form_login.is_valid():
+        user_from_db = User.objects.filter(email=form_login.cleaned_data["email"])
+        if user_from_db:
+            username = user_from_db[0].username
+            user = authenticate(
+                username=username, password=form_login.cleaned_data["password"]
+            )
+            if user:
+                login(request, user)
+                return redirect("home_page")
             else:
-                form_login.add_error(None, "Invalid email")
-    elif request.method == "POST" and "Register" in request.POST:
-        form_register = Register(request.POST)
-        if form_register.is_valid():
-            form_register.save()
-            messages.success(request, "Success registration")
-            data = {
-                "form_login": Login(),
-                "form_register": form_register,
-                "hidden": True,
-                messages: messages,
-            }
-            return render(request, "index.html", context=data)
+                form_login.add_error(None, "Invalid password")
         else:
-            hidden = False
-    data = {"form_login": form_login, "form_register": form_register, "hidden": hidden}
+            form_login.add_error(None, "Invalid email")
+    data = {"form_login": form_login, "form_register": Register()}
+    return render(request, "index.html", context=data)
+
+
+def sign_up(request):
+    form_register = Register(request.POST)
+    data = dict()
+    if form_register.is_valid():
+        form_register.save()
+        messages.success(request, "Success registration")
+        data['messages'] = messages.get_messages(request)
+    else:
+        data['visible_popup'] = True
+    data['form_register'] = form_register
     return render(request, "index.html", context=data)
 
 
