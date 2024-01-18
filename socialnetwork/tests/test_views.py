@@ -16,18 +16,17 @@ class ViewTestCase(TestCase):
 
     
     def test_login_success(self):
-        url = reverse('index')
+        url = reverse('sign_in')
         data = {
             'email': self.user.email,
             'password': 'testpass',
-            'Login': 'Log in'
         }
         response = self.client.post(url, data)
         self.assertRedirects(response, reverse('home_page'))
 
 
     def test_login_invalid(self):
-        url = reverse('index')
+        url = reverse('sign_in')
         data = {
             'email': self.user.email,
             'password': 'testpass1',
@@ -42,7 +41,7 @@ class ViewTestCase(TestCase):
         self.client.login(username='testuser', password='testpass')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'news.html')
+        self.assertTemplateUsed(response, 'homepage/news.html')
     
 
     def test_view_profile(self):
@@ -50,5 +49,7 @@ class ViewTestCase(TestCase):
         self.client.login(username='testuser', password='testpass')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'profile.html')
+        self.assertTemplateUsed(response, 'profile/profile.html')
 
+
+    
