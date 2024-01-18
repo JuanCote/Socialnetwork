@@ -12,7 +12,7 @@ def home_page(request):
     form = PostForm()
     posts = Post.objects.order_by("-created_at")
     data = {"form": form, "posts": posts, "user": user}
-    return render(request, "news.html", context=data)
+    return render(request, "homepage/news.html", context=data)
 
 
 @login_required(login_url='index')
@@ -29,7 +29,7 @@ def create_post(request):
         return redirect("home_page")
     posts = Post.objects.order_by("-created_at")
     data = {"form": form, "posts": posts, "user": user}
-    return render(request, "news.html", context=data)
+    return render(request, "homepage/news.html", context=data)
 
 
 @login_required(login_url="index")

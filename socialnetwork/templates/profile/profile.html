@@ -5,8 +5,8 @@
     <div class="rounded-t-lg pt-6 bg-[#f9f9f9] h-24 border-b-2 border-[#eeeeee]">
         <div class="ml-[19rem]">
             <h1 class="text-lg font-semibold">{{ user.first_name }} {{ user.last_name }}</h1>
-            {% if user.about_me %}
-                <p class="mb-3">{{ user.about_me }}</p>
+            {% if user.profile.about_me %}
+                <p class="mb-3">{{ user.profile.about_me }}</p>
             {% else %}
                 <p class="mb-3"> - </p>
             {% endif %}

@@ -39,7 +39,7 @@ def profile(request):
         "form": ProfileForm(initial=initial_data),
         "form_ava": EditAvaForm(),
     }
-    return render(request, "profile.html", context=data)
+    return render(request, "profile/profile.html", context=data)
     
 
 @login_required(login_url="index")

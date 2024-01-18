@@ -31,5 +31,4 @@ async function subscribe(id, user1, user2) {
             'X-CSRFToken': csrftoken
         }
     })
-    let data = await response.json()
 }

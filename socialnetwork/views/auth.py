@@ -20,7 +20,7 @@ def index(request):
         "form_register": Register()
         }
 
-    return render(request, "index.html", context=data)
+    return render(request, "auth/index.html", context=data)
 
 
 def sign_in(request):
@@ -43,7 +43,7 @@ def sign_in(request):
         else:
             form_login.add_error(None, "Invalid email")
     data = {"form_login": form_login, "form_register": Register()}
-    return render(request, "index.html", context=data)
+    return render(request, "auth/index.html", context=data)
 
 
 def sign_up(request):
@@ -56,7 +56,7 @@ def sign_up(request):
     else:
         data['visible_popup'] = True
     data['form_register'] = form_register
-    return render(request, "index.html", context=data)
+    return render(request, "auth/index.html", context=data)
 
 
 @receiver(post_save, sender=User)
