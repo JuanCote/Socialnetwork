@@ -4,9 +4,9 @@
 <div class="flex flex-col relative">
     <div class="rounded-t-lg pt-6 bg-[#f9f9f9] h-24 border-b-2 border-[#eeeeee]">
         <div class="ml-[19rem]">
-            <h1 class="text-lg font-semibold">{{ profile.user.user.first_name }} {{ profile.user.user.last_name }}</h1>
-            {% if profile.user.about_me %}
-                <p class="mb-3">{{ profile.user.about_me }}</p>
+            <h1 class="text-lg font-semibold">{{ user.first_name }} {{ user.last_name }}</h1>
+            {% if user.about_me %}
+                <p class="mb-3">{{ user.about_me }}</p>
             {% else %}
                 <p class="mb-3"> - </p>
             {% endif %}
@@ -15,7 +15,7 @@
     <div class="pt-4 flex rounded-b-lg bg-white h-80">
         <div class="mt-[-5.5rem] ml-[1.5rem]">
             <div class="relative rounded-full overflow-hidden h-[15rem] flex mx-auto" id="avaDiv">
-                <img src={{ profile.user.avatar.url }} class="cursor-pointer hover:opacity-50 transition rounded-full aspect-square object-cover">
+                <img src={{ profile.avatar.url }} class="cursor-pointer hover:opacity-50 transition rounded-full aspect-square object-cover">
             </div>
         </div>
         <div class="ml-6">
@@ -29,9 +29,12 @@
                     <li>Hometown:</li>
                 </ul>
                 <ul class="ml-6">
-                    {% for elem in profile.details %}
-                        <li>{{ elem }}</li>
-                    {% endfor %}
+                    <li>{{ profile.sex }}</li>
+                    <li>{{ profile.interested_in }}</li>              
+                    <li>{{ profile.relationship_status }}</li>
+                    <li>{{ profile.looking_for }}</li>
+                    <li>{{ profile.birthday }}</li>
+                    <li>{{ profile.hometown }}</li>           
                 </ul>
             </div>
             <div class="flex mt-4">
@@ -53,9 +56,8 @@
             <img id="cross" alt="cross" class="h-8 ml-auto cursor-pointer" src="{% static 'images/cross.png' %}">
         </div>
         <div class="p-4 flex flex-col">
-            <form class="flex flex-col space-y-2" method="POST" action="{% url 'profile' %}">
+            <form class="flex flex-col space-y-2" method="POST" action="{% url 'update_profile' %}">
                 {% csrf_token %}
-                <!--                <div class="mb-3 text-lg bg-red-300 text-red-800 pl-3">{{ form.non_field_errors }}</div>-->
                 <input type="hidden" name="action" value="updateProfile">
                 {{ form.about_me }}
                 {{ form.interested_in }}
@@ -83,11 +85,11 @@
             <img id="cross-ava" alt="cross" class="h-8 ml-auto cursor-pointer" src="{% static 'images/cross.png' %}">
         </div>
         <div class="p-4">
-            <form enctype="multipart/form-data" class="flex flex-col" method="POST" action="{% url 'profile' %}">
+            <form enctype="multipart/form-data" class="flex flex-col" method="POST" action="{% url 'update_ava' %}">
                 {% csrf_token %}
                 <input type="hidden" name="action" value="updateAva">
                 <label class="relative rounded-full overflow-hidden h-[15rem] flex mx-auto" for="imageInput">
-                    <img src={{ profile.user.avatar.url }} class="cursor-pointer hover:opacity-50 transition rounded-full aspect-square object-cover" id="display-image">
+                    <img src={{ profile.avatar.url }} class="cursor-pointer hover:opacity-50 transition rounded-full aspect-square object-cover" id="display-image">
                 </label>
                 {{ form_ava.image }}
                 <button type="submit" name="Avatar" class="w-3/5 text-white text-xl font-semibold h-10 bg-green-500 transition hover:bg-green-600 mt-6 mx-auto rounded-lg">Edit</button>

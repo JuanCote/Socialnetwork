@@ -6,7 +6,7 @@
             <h1 class="font-semibold ml-3 text-lg flex text-blue-700 h-10 border-gray-300 border-b pt-1">Make Post</h1>
             <div class="flex bg-white px-4 py-4 mb-4 shadow-xl rounded-lg">
                 <img class="h-12 aspect-square object-cover rounded-full" src={{ user.profile.avatar.url }}>
-                <form method="post" enctype="multipart/form-data" action={% url 'home_page' %}>
+                <form method="post" enctype="multipart/form-data" action={% url 'create_post' %}>
                     {% csrf_token %}
                     <div>
                         {{ form.content }}
